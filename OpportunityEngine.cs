@@ -4,8 +4,8 @@ using static System.Net.Mime.MediaTypeNames;
 public class OpportunityEngine
 {
     private const int RsiPeriod = 14;
-    private const int ShortEmaPeriod = 9;
-    private const int LongEmaPeriod = 21;
+    private const int ShortEmaPeriod = 12;
+    private const int LongEmaPeriod = 26;
 
     public OpportunitySignal Analyze(BrapiQuoteResult quote)
     {
@@ -92,76 +92,105 @@ public class OpportunityEngine
     }
 
     public List<OpportunitySignal> AnalyzeHistory(BrapiQuoteResult quote)
+{
+    // 1) Monta candles no formato esperado pela Skender e ordena por data
+    var candles = quote.HistoricalDataPrice
+                       .OrderBy(h => h.DateUtc)
+                       .Select(x => new Quote
+                       {
+                           Date = x.DateUtc,
+                           Open = x.Open,
+                           High = x.High,
+                           Low = x.Low,
+                           Close = x.Close,
+                           Volume = x.Volume
+                       })
+                       .ToList();
+
+    var closes = candles
+        .Select(h => (double)h.Close)
+        .ToList();
+
+    var signals = new List<OpportunitySignal>();
+
+    if (closes.Count < LongEmaPeriod + 2) // só pra evitar histórico muito pequeno
+        return signals;
+
+    // 2) Indicadores pela Skender
+    var stochRsiList = candles
+        .GetStochRsi(14, 14, 3, 3)
+        .ToList();
+
+    var macdList = candles
+        .GetMacd(12, 26, 9)
+        .ToList();
+
+    // 3) Varre o histórico procurando sinais
+    for (int i = 1; i < candles.Count; i++)
     {
-        var candles = quote.HistoricalDataPrice
-                           .OrderBy(h => h.Date)
-                           .ToList();
+        var stochPrev = stochRsiList[i - 1];
+        var stochCurr = stochRsiList[i];
 
-        var closes = candles
-            .Select(h => (double)h.Close)
-            .ToList();
+        var macdPrev = macdList[i - 1];
+        var macdCurr = macdList[i];
 
-        var signals = new List<OpportunitySignal>();
-
-        if (closes.Count < LongEmaPeriod + 2)
-            return signals;
-
-        var rsi = Indicators.Rsi(closes, RsiPeriod);
-        var emaShort = Indicators.Ema(closes, ShortEmaPeriod);
-        var emaLong = Indicators.Ema(closes, LongEmaPeriod);
-
-        // Começa em LongEmaPeriod + 1 pra garantir EMAs formadas + candle anterior
-        for (int i = LongEmaPeriod + 1; i < closes.Count; i++)
+        // pula enquanto os indicadores ainda não estiverem formados
+        if (!stochPrev.StochRsi.HasValue || !stochCurr.StochRsi.HasValue ||
+            !macdPrev.Macd.HasValue || !macdPrev.Signal.HasValue ||
+            !macdCurr.Macd.HasValue || !macdCurr.Signal.HasValue)
         {
-            int prev = i - 1;
-
-            double lastRsi = rsi[i];
-            double prevRsi = rsi[prev];
-
-            double lastShort = emaShort[i];
-            double prevShort = emaShort[prev];
-            double lastLong = emaLong[i];
-            double prevLong = emaLong[prev];
-
-            bool bullishCross = prevShort < prevLong && lastShort > lastLong;
-            bool bearishCross = prevShort > prevLong && lastShort < lastLong;
-
-            bool rsiFromOversold = prevRsi < 30 && lastRsi >= 30;
-            bool rsiFromOverbought = prevRsi > 70 && lastRsi <= 70;
-
-            OpportunityType type = OpportunityType.None;
-            string reason;
-
-            if (bullishCross && rsiFromOversold)
-            {
-                type = OpportunityType.Call;
-                reason =
-                    "RSI saiu de sobrevenda (<30→>=30) + cruzamento altista da EMA curta sobre a EMA longa.";
-            }
-            else if (bearishCross && rsiFromOverbought)
-            {
-                type = OpportunityType.Put;
-                reason =
-                    "RSI saiu de sobrecompra (>70→<=70) + cruzamento baixista da EMA curta abaixo da EMA longa.";
-            }
-            else
-            {
-                continue; // sem sinal forte, pula
-            }
-
-            signals.Add(new OpportunitySignal
-            {
-                Ticker = quote.Symbol,
-                Date = candles[i].DateUtc,
-                LastPrice = closes[i],
-                LastRsi = lastRsi,
-                Type = type,
-                Reason = reason
-            });
+            continue;
         }
 
-        return signals;
+        double prevStoch = stochPrev.StochRsi.Value;
+        double currStoch = stochCurr.StochRsi.Value;
+
+        double prevMacdVal    = macdPrev.Macd.Value;
+        double prevSignalVal  = macdPrev.Signal.Value;
+        double currMacdVal    = macdCurr.Macd.Value;
+        double currSignalVal  = macdCurr.Signal.Value;
+
+        // OBS: aqui assumo StochRSI em escala 0–100 -> thresholds 20/80
+        bool stochFromOversold   = prevStoch < 20 && currStoch >= 20;
+        bool stochFromOverbought = prevStoch > 80 && currStoch <= 80;
+
+        bool macdBullishCross  = prevMacdVal <= prevSignalVal && currMacdVal >  currSignalVal;
+        bool macdBearishCross  = prevMacdVal >= prevSignalVal && currMacdVal <  currSignalVal;
+
+        OpportunityType type = OpportunityType.None;
+        string reason;
+
+        if (stochFromOversold && macdBullishCross)
+        {
+            type = OpportunityType.Call;
+            reason =
+                "StochRSI saiu de sobrevenda (<20→>=20) + cruzamento altista do MACD (MACD acima da linha de sinal).";
+        }
+        else if (stochFromOverbought && macdBearishCross)
+        {
+            type = OpportunityType.Put;
+            reason =
+                "StochRSI saiu de sobrecompra (>80→<=80) + cruzamento baixista do MACD (MACD abaixo da linha de sinal).";
+        }
+        else
+        {
+            continue; // sem sinal forte, ignora esse candle
+        }
+
+        signals.Add(new OpportunitySignal
+        {
+            Ticker   = quote.Symbol,
+            Date     = candles[i].Date,
+            LastPrice = closes[i],
+            LastRsi  = (double)currStoch, // aqui é o valor do StochRSI atual
+            Type     = type,
+            Reason   = reason
+        });
     }
+
+    return signals;
+}
+
 }
 
 public static class Indicators

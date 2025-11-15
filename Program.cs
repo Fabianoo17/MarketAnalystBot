@@ -23,7 +23,7 @@ internal class Program
 
         try
         {
-            var quote = await client.GetDailyHistoryAsync(ticker, range: "1y", interval: "1d"); // 1 ano pra ter bastante dado
+            var quote = await client.GetDailyHistoryAsync(ticker, range: "5y", interval: "1wk"); // 1 ano pra ter bastante dado
 
             if (quote is null || quote.HistoricalDataPrice is null || quote.HistoricalDataPrice.Count == 0)
             {
