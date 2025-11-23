@@ -1,50 +1,53 @@
-﻿using Skender.Stock.Indicators;
 using System.Globalization;
+using MarketAnalystBot.Application.Contracts;
+using MarketAnalystBot.Application.Services;
+using MarketAnalystBot.Infrastructure.Brapi;
+
+namespace MarketAnalystBot.Presentation;
 
 internal class Program
 {
+    private static readonly List<string> Tickers =
+    [
+        "ABEV3", "ALOS3", "ASAI3", "AURE3", "AXIA3", "AXIA6", "AZUL4", "AZZA3", "B3SA3", "BBAS3", "BBDC3", "BBDC4",
+        "BBSE3", "BEEF3", "BRAP4", "BRAV3", "BRKM5", "CMIG4", "CMIN3", "COGN3", "CPFE3", "CSAN3",
+        "CSNA3", "CVCB3", "CXSE3", "CYRE3", "DIRR3", "EGIE3", "EMBJ3", "ENEV3", "ENGI1", "EQTL3", "FLRY3", "GGBR4",
+        "GOAU4", "HAPV3", "HYPE3", "IGTI1", "IRBR3", "ISAE4", "ITSA4", "ITUB4", "KLBN1", "LREN3", "MBRF3", "MGLU3",
+        "MOTV3", "MRVE3", "MULT3", "NATU3", "PCAR3", "PETR3", "PETR4", "PETZ3", "POMO4", "PRIO3", "PSSA3", "RADL3",
+        "RAIL3", "RAIZ4", "RDOR3", "RECV3", "RENT3", "SANB1", "SBSP3", "SLCE3", "SMFT3", "SMTO3", "STBP3", "SUZB3",
+        "TAEE1", "TIMS3", "TOTS3", "UGPA3", "USIM5", "VALE3", "VAMO3", "VBBR3", "VIVA3", "VIVT3", "WEGE3", "YDUQ3"
+    ];
+
     private async static Task Main(string[] args)
     {
-        var tickers = new List<string> {
-            "ABEV3", "ALOS3", "ASAI3", "AURE3", "AXIA3", "AXIA6", "AZUL4", "AZZA3", "B3SA3", "BBAS3", "BBDC3", "BBDC4",
-            "BBSE3", "BEEF3", "BRAP4", "BRAV3", "BRKM5", "CMIG4", "CMIN3", "COGN3", "CPFE3", "CSAN3",
-            "CSNA3", "CVCB3", "CXSE3", "CYRE3", "DIRR3", "EGIE3", "EMBJ3", "ENEV3", "ENGI1", "EQTL3", "FLRY3", "GGBR4",
-            "GOAU4", "HAPV3", "HYPE3", "IGTI1", "IRBR3", "ISAE4", "ITSA4", "ITUB4", "KLBN1", "LREN3", "MBRF3", "MGLU3",
-            "MOTV3", "MRVE3", "MULT3", "NATU3", "PCAR3", "PETR3", "PETR4", "PETZ3", "POMO4", "PRIO3", "PSSA3", "RADL3",
-            "RAIL3", "RAIZ4", "RDOR3", "RECV3", "RENT3", "SANB1", "SBSP3", "SLCE3", "SMFT3", "SMTO3", "STBP3", "SUZB3",
-            "TAEE1", "TIMS3", "TOTS3", "UGPA3", "USIM5", "VALE3", "VAMO3", "VBBR3", "VIVA3", "VIVT3", "WEGE3", "YDUQ3"
+        string? token = Environment.GetEnvironmentVariable("BRAPI_TOKEN");
+
+        var settings = new BrapiSettings
+        {
+            Token = string.IsNullOrWhiteSpace(token) ? null : token
         };
 
-        foreach (var ticker in tickers)
+        IBrapiClient client = new BrapiClient(settings);
+        IOpportunityEngine engine = new OpportunityEngine();
+
+        foreach (var ticker in Tickers)
         {
-
-            var token = "gE9YjNgLoWdfqSZUHNMtot";
-
-            var settings = new BrapiSettings
-            {
-                Token = string.IsNullOrWhiteSpace(token) ? null : token
-            };
-
             Console.WriteLine("=== OptionsOpportunityAnalyzer ===");
             Console.WriteLine($"Ticker: {ticker}");
             Console.WriteLine(token is null
                 ? "⚠️ Sem token BRAPI_TOKEN. Usando apenas ações liberadas públicas da brapi."
                 : "Token BRAPI_TOKEN detectado. Usando brapi.dev Pro.");
 
-            var client = new BrapiClient(settings);
-
             try
             {
-                var quote = await client.GetDailyHistoryAsync(ticker, range: "3mo", interval: "1d"); // 1 ano pra ter bastante dado
+                var quote = await client.GetDailyHistoryAsync(ticker, range: "3mo", interval: "1d");
 
                 if (quote is null || quote.HistoricalDataPrice is null || quote.HistoricalDataPrice.Count == 0)
                 {
                     Console.WriteLine("Não foi possível obter dados da brapi.dev.");
                     continue;
                 }
-                var engine = new OpportunityEngine();
 
-                // 1) Último candle
                 var lastSignal = engine.Analyze(quote);
                 if (lastSignal.Type == OpportunityType.None) continue;
                 Console.WriteLine();
@@ -55,7 +58,6 @@ internal class Program
                 Console.WriteLine($"Tipo:   {lastSignal.Type}");
                 Console.WriteLine($"Motivo: {lastSignal.Reason}");
 
-                // 2) Histórico
                 Console.WriteLine();
                 Console.WriteLine("=== SINAIS HISTÓRICOS (BACKTEST SIMPLES) ===");
 
@@ -92,8 +94,5 @@ internal class Program
                 Console.WriteLine(ex);
             }
         }
-
-
     }
 }
-

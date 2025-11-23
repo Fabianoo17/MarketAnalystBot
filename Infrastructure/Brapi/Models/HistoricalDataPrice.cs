@@ -1,8 +1,9 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
+
+namespace MarketAnalystBot.Infrastructure.Brapi.Models;
 
 public class HistoricalDataPrice
 {
-    // Epoch (segundos)
     [JsonPropertyName("date")]
     public long Date { get; set; }
 
@@ -23,7 +24,7 @@ public class HistoricalDataPrice
 
     [JsonPropertyName("adjustedClose")]
     public decimal AdjustedClose { get; set; }
+
     [JsonIgnore]
-    public DateTime DateUtc =>
-    DateTimeOffset.FromUnixTimeSeconds(Date).UtcDateTime;
+    public DateTime DateUtc => DateTimeOffset.FromUnixTimeSeconds(Date).UtcDateTime;
 }
