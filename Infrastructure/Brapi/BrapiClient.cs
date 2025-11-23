@@ -1,6 +1,10 @@
-﻿using System.Text.Json;
+using System.Text.Json;
+using MarketAnalystBot.Application.Contracts;
+using MarketAnalystBot.Infrastructure.Brapi.Models;
 
-public class BrapiClient
+namespace MarketAnalystBot.Infrastructure.Brapi;
+
+public class BrapiClient : IBrapiClient
 {
     private readonly HttpClient _httpClient;
     private readonly BrapiSettings _settings;
@@ -26,7 +30,6 @@ public class BrapiClient
 
     public async Task<BrapiQuoteResult?> GetDailyHistoryAsync(string ticker, string range = "3mo", string interval = "1d")
     {
-        // Ex: /api/quote/PETR4?range=3mo&interval=1d
         var url = $"/api/quote/{ticker}?range={range}&interval={interval}";
 
         var response = await _httpClient.GetAsync(url);
@@ -43,5 +46,3 @@ public class BrapiClient
         return data?.Results.FirstOrDefault();
     }
 }
-
-

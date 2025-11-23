@@ -1,9 +1,12 @@
-﻿using Skender.Stock.Indicators;
-using static System.Net.Mime.MediaTypeNames;
+using MarketAnalystBot.Application.Contracts;
+using MarketAnalystBot.Domain.Entities;
+using MarketAnalystBot.Infrastructure.Brapi.Models;
+using Skender.Stock.Indicators;
 
-public class OpportunityEngine
+namespace MarketAnalystBot.Application.Services;
+
+public class OpportunityEngine : IOpportunityEngine
 {
-    private const int RsiPeriod = 14;
     private const int ShortEmaPeriod = 12;
     private const int LongEmaPeriod = 26;
 
@@ -18,7 +21,8 @@ public class OpportunityEngine
             Open = x.Open,
             Volume = x.Volume,
         }).ToList();
-        var closes = candles.OrderBy(x=>x.Date)
+
+        var closes = candles.OrderBy(x => x.Date)
             .Select(h => (double)h.Close)
             .ToList();
 
@@ -34,24 +38,20 @@ public class OpportunityEngine
             };
         }
 
-        //var rsi = Indicators.Rsi(closes, RsiPeriod);
-        //var emaShort = Indicators.Ema(closes, ShortEmaPeriod);
-        //var emaLong = Indicators.Ema(closes, LongEmaPeriod);
-
-        var rsi = candles.GetStochRsi(14,14,3,3).ToList() ;
+        var rsi = candles.GetStochRsi(14, 14, 3, 3).ToList();
         var emaShort = candles.GetEma(ShortEmaPeriod).ToList();
         var emaLong = candles.GetEma(LongEmaPeriod).ToList();
 
         int last = closes.Count - 2;
         int prev = last - 1;
 
-        double lastRsi = rsi[last].StochRsi.Value;
-        double prevRsi = rsi[prev].StochRsi.Value;
+        double lastRsi = rsi[last].StochRsi!.Value;
+        double prevRsi = rsi[prev].StochRsi!.Value;
 
-        double lastShort = emaShort[last].Ema.Value;
-        double prevShort = emaShort[prev].Ema.Value;
-        double lastLong = emaLong[last].Ema.Value;
-        double prevLong = emaLong[prev].Ema.Value;
+        double lastShort = emaShort[last].Ema!.Value;
+        double prevShort = emaShort[prev].Ema!.Value;
+        double lastLong = emaLong[last].Ema!.Value;
+        double prevLong = emaLong[prev].Ema!.Value;
 
         bool bullishCross = prevShort < prevLong && lastShort > lastLong;
         bool bearishCross = prevShort > prevLong && lastShort < lastLong;
@@ -93,7 +93,6 @@ public class OpportunityEngine
 
     public List<OpportunitySignal> AnalyzeHistory(BrapiQuoteResult quote)
     {
-        // 1) Monta candles no formato esperado pela Skender e ordena por data
         var candles = quote.HistoricalDataPrice
                            .OrderBy(h => h.DateUtc)
                            .Select(x => new Quote
@@ -113,22 +112,17 @@ public class OpportunityEngine
 
         var signals = new List<OpportunitySignal>();
 
-        // Histórico mínimo pra não gerar sinal em meia dúzia de candles
         if (candles.Count < 60)
             return signals;
 
-        // 2) Indicadores pela Skender
-        // StochRSI: 14,14,3,3 (padrão bem comum)
         var stochRsiList = candles
             .GetStochRsi(14, 14, 3, 3)
             .ToList();
 
-        // MACD: usa o padrão 12,26,9
         var macdList = candles
             .GetMacd(12, 26, 9)
             .ToList();
 
-        // 3) Varre o histórico procurando sinais
         for (int i = 1; i < candles.Count; i++)
         {
             var stochPrev = stochRsiList[i - 1];
@@ -137,7 +131,6 @@ public class OpportunityEngine
             var macdPrev = macdList[i - 1];
             var macdCurr = macdList[i];
 
-            // pula enquanto os indicadores ainda não estiverem formados
             if (!stochPrev.StochRsi.HasValue || !stochCurr.StochRsi.HasValue ||
                 !macdPrev.Macd.HasValue || !macdPrev.Signal.HasValue ||
                 !macdCurr.Macd.HasValue || !macdCurr.Signal.HasValue)
@@ -155,13 +148,9 @@ public class OpportunityEngine
             double currDiff = Math.Abs(currMacdVal - currSignalVal);
             double prevDiff = Math.Abs(prevMacdVal - prevSignalVal);
 
-            // StochRSI
-            bool stochFromOversold = 
-                //prevStoch < 20 && 
-                currStoch >= 20;
+            bool stochFromOversold = currStoch >= 20;
             bool stochFromOverbought = prevStoch > 80 && currStoch <= 80;
 
-            // MACD — cruzamento com buffer mínimo (0.09)
             bool macdCrossUp =
                 currMacdVal > currSignalVal &&
                  prevDiff < 0.07 &&
@@ -172,16 +161,12 @@ public class OpportunityEngine
                 currMacdVal < currSignalVal &&
                 currDiff >= 0.09;
 
-            // Filtro de zona:
-            // - Compra: MACD ainda abaixo de zero (reversão altista)
-            // - Venda:  MACD ainda acima de zero (reversão baixista)
-            bool macdBullishSetup = macdCrossUp;  // cruzou pra cima abaixo da linha zero
-            bool macdBearishSetup = macdCrossDown && currMacdVal > 0;  // cruzou pra baixo acima da linha zero
+            bool macdBullishSetup = macdCrossUp;
+            bool macdBearishSetup = macdCrossDown && currMacdVal > 0;
 
             OpportunityType type = OpportunityType.None;
             string reason;
 
-            // 🎯 CALL (alta): StochRSI saindo de sobrevenda + MACD cruzou pra cima abaixo da linha zero
             if (stochFromOversold && macdBullishSetup)
             {
                 type = OpportunityType.Call;
@@ -189,7 +174,6 @@ public class OpportunityEngine
                     "StochRSI saiu de sobrevenda (<20→>=20) " +
                     "+ MACD cruzou para cima da linha de sinal abaixo da linha zero (possível reversão altista).";
             }
-            // 🎯 PUT (baixa): StochRSI saindo de sobrecompra + MACD cruzou pra baixo acima da linha zero
             else if (stochFromOverbought && macdBearishSetup)
             {
                 type = OpportunityType.Put;
@@ -199,7 +183,7 @@ public class OpportunityEngine
             }
             else
             {
-                continue; // sem sinal forte, ignora esse candle
+                continue;
             }
 
             signals.Add(new OpportunitySignal
@@ -207,104 +191,12 @@ public class OpportunityEngine
                 Ticker = quote.Symbol,
                 Date = candles[i].Date,
                 LastPrice = closes[i],
-                LastRsi = currStoch, // aqui está indo o valor do StochRSI (pode renomear propriedade depois)
+                LastRsi = currStoch,
                 Type = type,
                 Reason = reason
             });
         }
 
         return signals;
-    }
-
-
-}
-
-public static class Indicators
-{
-    /// <summary>
-    /// Calcula EMA (Exponential Moving Average) padrão.
-    /// </summary>
-    public static List<double> Ema(IReadOnlyList<double> closes, int period)
-    {
-        var result = new List<double>(closes.Count);
-        if (closes.Count < period)
-            return result;
-
-        double multiplier = 2.0 / (period + 1.0);
-
-        // Média simples inicial
-        double sma = closes.Take(period).Average();
-        result.Add(sma);
-
-        for (int i = period; i < closes.Count; i++)
-        {
-            double emaPrev = result[^1];
-            double ema = ((closes[i] - emaPrev) * multiplier) + emaPrev;
-            result.Add(ema);
-        }
-
-        // Para alinhamento, vamos preencher os primeiros (period-1) como NaN
-        result.InsertRange(0, Enumerable.Repeat(double.NaN, period - 1));
-        return result;
-    }
-
-    /// <summary>
-    /// RSI de 14 períodos (clássico).
-    /// </summary>
-    public static List<double> Rsi(IReadOnlyList<double> closes, int period = 14)
-    {
-        var rsi = new List<double>(new double[closes.Count]);
-
-        if (closes.Count <= period)
-            return rsi;
-
-        double gainSum = 0;
-        double lossSum = 0;
-
-        // Primeiro período
-        for (int i = 1; i <= period; i++)
-        {
-            double change = (double)(closes[i] - closes[i - 1]);
-            if (change > 0)
-                gainSum += change;
-            else
-                lossSum -= change; // change negativo
-        }
-
-        double avgGain = gainSum / period;
-        double avgLoss = lossSum / period;
-
-        rsi[period] = CalcRsi(avgGain, avgLoss);
-
-        // Demais períodos
-        for (int i = period + 1; i < closes.Count; i++)
-        {
-            double change = (double)(closes[i] - closes[i - 1]);
-
-            double gain = change > 0 ? change : 0;
-            double loss = change < 0 ? -change : 0;
-
-            avgGain = ((avgGain * (period - 1)) + gain) / period;
-            avgLoss = ((avgLoss * (period - 1)) + loss) / period;
-
-            rsi[i] = CalcRsi(avgGain, avgLoss);
-        }
-
-        // Antes do índice "period" deixa como 0
-        for (int i = 0; i < period; i++)
-        {
-            rsi[i] = 0;
-        }
-
-        return rsi;
-    }
-
-    private static double CalcRsi(double avgGain, double avgLoss)
-    {
-        if (avgLoss == 0)
-            return 100;
-
-        double rs = avgGain / avgLoss;
-        return 100 - (100 / (1 + rs));
     }
 }
