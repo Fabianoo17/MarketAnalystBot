@@ -46,6 +46,7 @@ internal class Program
 
                 // 1) Último candle
                 var lastSignal = engine.Analyze(quote);
+                if (lastSignal.Type == OpportunityType.None) continue;
                 Console.WriteLine();
                 Console.WriteLine("=== SINAL MAIS RECENTE ===");
                 Console.WriteLine($"Data:   {lastSignal.Date:yyyy-MM-dd}");
@@ -58,7 +59,9 @@ internal class Program
                 Console.WriteLine();
                 Console.WriteLine("=== SINAIS HISTÓRICOS (BACKTEST SIMPLES) ===");
 
-                var historySignals = engine.AnalyzeHistory(quote);
+                var historySignals = new List<OpportunitySignal>();
+                    
+                    //engine.AnalyzeHistory(quote);
 
                 if (!historySignals.Any())
                 {

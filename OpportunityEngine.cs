@@ -22,7 +22,7 @@ public class OpportunityEngine
             .Select(h => (double)h.Close)
             .ToList();
 
-        if (closes.Count < LongEmaPeriod + 2)
+        if (closes.Count < LongEmaPeriod + 1)
         {
             return new OpportunitySignal
             {

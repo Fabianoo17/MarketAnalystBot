@@ -1,0 +1,129 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "Skender.Stock.Indicators/2.7.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Skender.Stock.Indicators.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Skender.Stock.Indicators.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Skender.Stock.Indicators/2.7.0": {
+      "sha512": "pWTlrvoWgDa8OW0tfjrM5Ffw4IRzl8dVWGFcFDlAbcpX7qklbJzSJR8hv8Dt9c9tMeEn+DjrOqs8wNqbxz8XWg==",
+      "type": "package",
+      "path": "skender.stock.indicators/2.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "NOTICE",
+        "README.md",
+        "icon.png",
+        "lib/net10.0/Skender.Stock.Indicators.dll",
+        "lib/net10.0/Skender.Stock.Indicators.xml",
+        "lib/net6.0/Skender.Stock.Indicators.dll",
+        "lib/net6.0/Skender.Stock.Indicators.xml",
+        "lib/net8.0/Skender.Stock.Indicators.dll",
+        "lib/net8.0/Skender.Stock.Indicators.xml",
+        "lib/net9.0/Skender.Stock.Indicators.dll",
+        "lib/net9.0/Skender.Stock.Indicators.xml",
+        "lib/netstandard2.0/Skender.Stock.Indicators.dll",
+        "lib/netstandard2.0/Skender.Stock.Indicators.xml",
+        "lib/netstandard2.1/Skender.Stock.Indicators.dll",
+        "lib/netstandard2.1/Skender.Stock.Indicators.xml",
+        "skender.stock.indicators.2.7.0.nupkg.sha512",
+        "skender.stock.indicators.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "Skender.Stock.Indicators >= 2.7.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Fabiano\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.csproj",
+      "projectName": "MarketAnalystBot",
+      "projectPath": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.csproj",
+      "packagesPath": "C:\\Users\\Fabiano\\.nuget\\packages\\",
+      "outputPath": "C:\\source\\repos\\MarketAnalystBot\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Fabiano\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "dependencies": {
+          "Skender.Stock.Indicators": {
+            "target": "Package",
+            "version": "[2.7.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
