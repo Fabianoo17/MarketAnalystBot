@@ -1,9 +1,9 @@
 using System.Globalization;
 using MarketAnalystBot.Application.Contracts;
 using MarketAnalystBot.Application.Services;
+using MarketAnalystBot.Domain.Entities;
 using MarketAnalystBot.Infrastructure.Brapi;
 
-namespace MarketAnalystBot.Presentation;
 
 internal class Program
 {
@@ -20,7 +20,7 @@ internal class Program
 
     private async static Task Main(string[] args)
     {
-        string? token = Environment.GetEnvironmentVariable("BRAPI_TOKEN");
+        string? token = "gE9YjNgLoWdfqSZUHNMtot";
 
         var settings = new BrapiSettings
         {
@@ -40,7 +40,7 @@ internal class Program
 
             try
             {
-                var quote = await client.GetDailyHistoryAsync(ticker, range: "3mo", interval: "1d");
+                var quote = await client.GetDailyHistoryAsync(ticker, range: "6mo", interval: "1d");
 
                 if (quote is null || quote.HistoricalDataPrice is null || quote.HistoricalDataPrice.Count == 0)
                 {
@@ -49,7 +49,7 @@ internal class Program
                 }
 
                 var lastSignal = engine.Analyze(quote);
-                if (lastSignal.Type == OpportunityType.None) continue;
+                //if (lastSignal.Type == OpportunityType.None) continue;
                 Console.WriteLine();
                 Console.WriteLine("=== SINAL MAIS RECENTE ===");
                 Console.WriteLine($"Data:   {lastSignal.Date:yyyy-MM-dd}");
@@ -61,9 +61,7 @@ internal class Program
                 Console.WriteLine();
                 Console.WriteLine("=== SINAIS HISTÓRICOS (BACKTEST SIMPLES) ===");
 
-                var historySignals = new List<OpportunitySignal>();
-                    
-                    //engine.AnalyzeHistory(quote);
+                var historySignals = engine.AnalyzeHistory(quote);
 
                 if (!historySignals.Any())
                 {

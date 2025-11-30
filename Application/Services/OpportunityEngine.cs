@@ -15,11 +15,11 @@ public class OpportunityEngine : IOpportunityEngine
         var candles = quote.HistoricalDataPrice.Select(x => new Quote
         {
             Date = x.DateUtc,
-            Close = x.Close,
-            Low = x.Low,
-            High = x.High,
-            Open = x.Open,
-            Volume = x.Volume,
+            Close = x.Close ?? 0,
+            Low = x.Low ?? 0,
+            High = x.High ?? 0,
+            Open = x.Open ?? 0,
+            Volume = x.Volume ?? 0,
         }).ToList();
 
         var closes = candles.OrderBy(x => x.Date)
@@ -93,16 +93,17 @@ public class OpportunityEngine : IOpportunityEngine
 
     public List<OpportunitySignal> AnalyzeHistory(BrapiQuoteResult quote)
     {
+        if(quote is null) return new List<OpportunitySignal> { };
         var candles = quote.HistoricalDataPrice
                            .OrderBy(h => h.DateUtc)
                            .Select(x => new Quote
                            {
                                Date = x.DateUtc,
-                               Open = x.Open,
-                               High = x.High,
-                               Low = x.Low,
-                               Close = x.Close,
-                               Volume = x.Volume
+                               Open = x.Open ?? 0,
+                               High = x.High ?? 0,
+                               Low = x.Low ?? 0,
+                               Close = x.Close ?? 0,
+                               Volume = x.Volume ?? 0
                            })
                            .ToList();
 
@@ -140,6 +141,7 @@ public class OpportunityEngine : IOpportunityEngine
 
             double prevStoch = stochPrev.StochRsi.Value;
             double currStoch = stochCurr.StochRsi.Value;
+            double currRsiSignal = stochCurr.Signal.Value;
 
             double prevMacdVal = macdPrev.Macd.Value;
             double prevSignalVal = macdPrev.Signal.Value;
@@ -148,7 +150,7 @@ public class OpportunityEngine : IOpportunityEngine
             double currDiff = Math.Abs(currMacdVal - currSignalVal);
             double prevDiff = Math.Abs(prevMacdVal - prevSignalVal);
 
-            bool stochFromOversold = currStoch >= 20;
+            bool stochFromOversold = currStoch >= 20 && prevStoch < 20;
             bool stochFromOverbought = prevStoch > 80 && currStoch <= 80;
 
             bool macdCrossUp =
@@ -161,7 +163,7 @@ public class OpportunityEngine : IOpportunityEngine
                 currMacdVal < currSignalVal &&
                 currDiff >= 0.09;
 
-            bool macdBullishSetup = macdCrossUp;
+            bool macdBullishSetup = currMacdVal < 0 && currMacdVal > prevMacdVal;
             bool macdBearishSetup = macdCrossDown && currMacdVal > 0;
 
             OpportunityType type = OpportunityType.None;
@@ -192,11 +194,101 @@ public class OpportunityEngine : IOpportunityEngine
                 Date = candles[i].Date,
                 LastPrice = closes[i],
                 LastRsi = currStoch,
+                LastRsiSignal = currRsiSignal,
                 Type = type,
-                Reason = reason
+                Reason = reason,
+                ExitSignal = FindExitByRsiCrossDown(quote, i)
             });
         }
 
         return signals;
     }
+
+    public OpportunitySignal FindExitByRsiCrossDown(
+    BrapiQuoteResult quote,
+    int entryIndex,
+    int rsiPeriod = 14,
+    double exitLevel = 70.0)
+    {
+        // 1) Monta candles ordenados
+        var candles = quote.HistoricalDataPrice
+                           .OrderBy(h => h.DateUtc)
+                           .Select(x => new Quote
+                           {
+                               Date = x.DateUtc,
+                               Open = x.Open ?? 0,
+                               High = x.High ?? 0,
+                               Low = x.Low ?? 0,
+                               Close = x.Close ?? 0,
+                               Volume = x.Volume ?? 0
+                           })
+                           .ToList();
+
+        var closes = candles
+            .Select(h => (double)h.Close)
+            .ToList();
+
+        // Proteções básicas
+        if (!candles.Any() || entryIndex < 0 || entryIndex >= candles.Count - 1)
+        {
+            return new OpportunitySignal
+            {
+                Ticker = quote.Symbol,
+                Date = candles.LastOrDefault()?.Date ?? DateTime.MinValue,
+                LastPrice = closes.LastOrDefault(),
+                Type = OpportunityType.None,
+                Reason = "Índice de entrada inválido ou histórico insuficiente para buscar saída."
+            };
+        }
+
+        // 2) Calcula RSI
+        var rsiList = candles
+            .GetStochRsi(14,14,9,9)
+            .ToList();
+
+        // 3) Varre a partir da barra após a entrada procurando o cruzamento pra baixo
+        // RSI cruzando de cima do nível (>= exitLevel) para baixo (< exitLevel)
+        for (int i = entryIndex + 1; i < candles.Count; i++)
+        {
+            if (i == 0)
+                continue;
+
+            var prevRsiResult = rsiList[i - 1];
+            var currRsiResult = rsiList[i];
+            bool currRsiAbaixo = currRsiResult.StochRsi < 80;
+            bool prevRsiAcima = prevRsiResult.StochRsi >= 80;
+
+            if (!prevRsiResult.StochRsi.HasValue || !currRsiResult.StochRsi.HasValue)
+                continue;
+
+            bool rsiCrossDown = currRsiAbaixo && prevRsiAcima;
+
+            if (rsiCrossDown )
+            {
+                return new OpportunitySignal
+                {
+                    Ticker = quote.Symbol,
+                    Date = candles[i].Date,
+                    LastPrice = closes[i],
+                    LastRsi = currRsiResult.StochRsi.Value,
+                    LastRsiSignal = currRsiResult.Signal.Value,
+                    Type = OpportunityType.Put, // aqui você pode criar um tipo específico de saída, se quiser
+                    Reason = $"RSI cruzou para baixo de {exitLevel} (de {prevRsiResult.StochRsi.Value:F2} para {currRsiResult.StochRsi.Value:F2}). Sinal de saída após a entrada no índice {entryIndex}."
+                };
+            }
+        }
+
+        // Se não achou nenhum cruzamento, retorna o último candle como "nenhum sinal claro"
+        return new OpportunitySignal
+        {
+            Ticker = quote.Symbol,
+            Date = candles.Last().Date,
+            LastPrice = closes.Last(),
+            LastRsi = rsiList.LastOrDefault()?.StochRsi ?? 0,
+            LastRsiSignal = rsiList.LastOrDefault()?.Signal ?? 0,
+            Type = OpportunityType.None,
+            Reason = $"Nenhum sinal claro de saída (RSI cruzando para baixo de {exitLevel}) após a entrada no índice {entryIndex}. Mantida até o último candle."
+        };
+    }
+
 }

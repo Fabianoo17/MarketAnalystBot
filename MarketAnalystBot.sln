@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketAnalystBot", "MarketAnalystBot.csproj", "{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketAnalystBot", "MarketAnalystBot.csproj", "{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketAnalystBot.Web", "..\MarketAnalystBot.Web\MarketAnalystBot.Web.csproj", "{9AEE955E-0032-4A9E-BD48-FD88471C4122}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{ED8676DA-2964-4BF0-82F4-B9C0959817BD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,10 @@ Global
 		{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AEE955E-0032-4A9E-BD48-FD88471C4122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEE955E-0032-4A9E-BD48-FD88471C4122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEE955E-0032-4A9E-BD48-FD88471C4122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEE955E-0032-4A9E-BD48-FD88471C4122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

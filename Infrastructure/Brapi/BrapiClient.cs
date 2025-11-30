@@ -30,7 +30,7 @@ public class BrapiClient : IBrapiClient
 
     public async Task<BrapiQuoteResult?> GetDailyHistoryAsync(string ticker, string range = "3mo", string interval = "1d")
     {
-        var url = $"/api/quote/{ticker}?range={range}&interval={interval}";
+        var url = $"/api/quote/{ticker}?range={range}&interval={interval}&token={_settings.Token}";
 
         var response = await _httpClient.GetAsync(url);
 

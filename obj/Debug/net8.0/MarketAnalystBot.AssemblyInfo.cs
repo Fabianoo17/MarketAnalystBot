@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarketAnalystBot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56d061e41fc438ca0a075deb5afac39a6835d5df")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+476947f7005f2c323d2bdd69f3895872386afa1f")]
 [assembly: System.Reflection.AssemblyProductAttribute("MarketAnalystBot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MarketAnalystBot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
