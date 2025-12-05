@@ -45,4 +45,22 @@ public class BrapiClient : IBrapiClient
 
         return data?.Results.FirstOrDefault();
     }
+
+    public async Task<QuoteListResponse?> GetTickersList( string range = "3mo", string interval = "1d")
+    {
+        var url = $"/api/quote/list?token={_settings.Token}";
+
+        var response = await _httpClient.GetAsync(url);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"Erro ao chamar brapi: {(int)response.StatusCode} - {response.ReasonPhrase}");
+            return null;
+        }
+
+        await using var stream = await response.Content.ReadAsStreamAsync();
+        var data = await JsonSerializer.DeserializeAsync<QuoteListResponse>(stream, JsonOptions);
+
+        return data;
+    }
 }

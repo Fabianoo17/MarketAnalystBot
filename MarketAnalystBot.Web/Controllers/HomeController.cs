@@ -11,12 +11,17 @@ namespace MarketAnalystBot.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBrapiClient _brapiClient;
         private readonly IOpportunityEngine _opportunetClient;
+        private readonly AppDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger, IOpportunityEngine opportunetClient, IBrapiClient brapiClient)
+        public HomeController(ILogger<HomeController> logger,
+            IOpportunityEngine opportunetClient,
+            IBrapiClient brapiClient,
+            AppDbContext context)
         {
             _logger = logger;
             _opportunetClient = opportunetClient;
             _brapiClient = brapiClient;
+            _dbContext = context;
         }
 
         public async Task<IActionResult> Index(string ticker)
@@ -28,8 +33,30 @@ namespace MarketAnalystBot.Web.Controllers
             return View(signals);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
+            _dbContext.Tickers.RemoveRange();
+            await _dbContext.SaveChangesAsync();
+            var dateInsert = DateTime.Now;
+            var candidates = await _brapiClient.GetTickersList();
+            foreach (var candidate in candidates.Stocks.Where(x=> !x.Stock.EndsWith('F'))) {
+                Console.WriteLine("Analisando --- " + candidate.Stock);
+                var quote = await _brapiClient.GetDailyHistoryAsync(candidate.Stock,"2y","1d");
+                if (WatchlistFilter.TryEvaluate(quote, out var list)) {
+                    var ticker = new Tickers { 
+                        CodTicker = candidate.Stock,
+                        DataRegistro = dateInsert,
+                        Score = list,
+                        Sector = candidate.Sector,
+                        Nome = candidate.Name,
+                        Logo = candidate.Logo
+                    };
+                    _dbContext.Tickers.Add(ticker);
+                    await _dbContext.SaveChangesAsync();
+
+                }
+                    Console.WriteLine("Analisando --- " + candidate.Stock+"---"+"Score: "+list.ToString("N2"));
+            }
             return View();
         }
 

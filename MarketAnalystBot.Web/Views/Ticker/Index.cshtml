@@ -1,0 +1,151 @@
+﻿@using MarketAnalystBot.Web.Models.Ticker
+@model TickerFilterViewModel
+
+@{
+    ViewData["Title"] = "Filtro de Tickers";
+}
+
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Filtro de Tickers</h2>
+        <small class="text-muted">Resultados: <strong>@(Model.Resultados?.Count() ?? 0)</strong></small>
+    </div>
+
+    <form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <label class="form-label">Código do Ticker</label>
+        <input type="text"
+               name="codTicker"
+               value="@Model.CodTicker"
+               class="form-control"
+               placeholder="Ex: PETR3" />
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Setor</label>
+        <select name="sector" class="form-select">
+            <option value="">-- Todos --</option>
+            @foreach (var s in Model.AvailableSectors ?? Enumerable.Empty<string>())
+            {
+                @if (Model.Sector == s )
+                {
+                    <option value="@s" selected>@s</option>
+                }
+                else
+                {
+
+                    <option value="@s">@s</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <label class="form-label">Score mínimo</label>
+        <input type="number"
+               step="0.01"
+               name="minScore"
+               value="@(Model.MinScore?.ToString(System.Globalization.CultureInfo.InvariantCulture))"
+               class="form-control" />
+    </div>
+
+    <div class="col-md-2">
+        <label class="form-label">Score máximo</label>
+        <input type="number"
+               step="0.01"
+               name="maxScore"
+               value="@(Model.MaxScore?.ToString(System.Globalization.CultureInfo.InvariantCulture))"
+               class="form-control" />
+    </div>
+
+    <div class="col-md-2 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+</form>
+
+@if (!(Model.Resultados?.Any() ?? false))
+{
+    <div class="alert alert-info">
+        Nenhum ticker encontrado com os filtros informados.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-sm align-middle">
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>ID</th>
+                <th>Ticker</th>
+                <th>Nome</th>
+                <th>Setor</th>
+                <th>Score</th>
+                <th>Data Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Resultados ?? Enumerable.Empty<Tickers>())
+            {
+                var link = Url.Action("Index", "Home", new { ticker = item.CodTicker });
+                string scoreText = item.Score.HasValue ? item.Score.Value.ToString("0.0000") : "-";
+                <tr class="clickable-row" data-href="@link" role="link" tabindex="0">
+                    <td style="width:48px;">
+                        <img src="@item.Logo"
+                             alt="@item.CodTicker"
+                             style="height:24px;" />
+                    </td>
+                    <td style="width:80px;">@item.IdTicker</td>
+                    <td>
+                        <div class="position-relative">
+                            <strong>@item.CodTicker</strong>
+                            <a href="@link" class="stretched-link" aria-label="Ver @item.CodTicker"></a>
+                        </div>
+                    </td>
+                    <td>@item.Nome</td>
+                    <td>@item.Sector</td>
+                    <td>
+                        @if (item.Score.HasValue)
+                        {
+                            var s = item.Score.Value;
+                            var badgeClass = s >= 0.8m ? "bg-success" : (s >= 0.5m ? "bg-warning text-dark" : "bg-danger");
+                            <span class="badge @badgeClass">@scoreText</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">-</span>
+                        }
+                    </td>
+                    <td>@item.DataRegistro.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    </div>
+}
+
+<style>
+    .clickable-row { cursor: pointer; }
+    .clickable-row:focus { outline: 3px solid rgba(13,110,253,0.25); }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.clickable-row').forEach(function (row) {
+            row.addEventListener('click', function (e) {
+                // Prevent navigation when clicking links inside the row (stretched-link)
+                if (e.target.closest('a')) return;
+                var href = row.getAttribute('data-href');
+                if (href) location.href = href;
+            });
+
+            row.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    var href = row.getAttribute('data-href');
+                    if (href) location.href = href;
+                }
+            });
+        });
+    });
+</script>

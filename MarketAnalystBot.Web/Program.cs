@@ -1,6 +1,7 @@
 using MarketAnalystBot.Application.Contracts;
 using MarketAnalystBot.Application.Services;
 using MarketAnalystBot.Infrastructure.Brapi;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 string? token = "gE9YjNgLoWdfqSZUHNMtot";
@@ -13,6 +14,8 @@ var settings = new BrapiSettings
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IBrapiClient>(new BrapiClient(settings));
 builder.Services.AddSingleton<IOpportunityEngine, OpportunityEngine>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Ticker}/{action=Index}");
 
 app.Run();
