@@ -1,0 +1,76 @@
+@model List<MarketAnalystBot.Web.Models.OpportunityAnalysis>
+
+@{
+    ViewData["Title"] = "Oportunidades";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Oportunidades identificadas</h2>
+        <small class="text-muted">Total: <strong>@Model?.Count()</strong></small>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Nenhuma análise disponível.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-sm align-middle">
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Score</th>
+                        <th>Tipo</th>
+                        <th>Último Preço</th>
+                        <th>Último RSI</th>
+                        <th>Períodos</th>
+                        <th>Data</th>
+                        <th>Motivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        var link = Url.Action("Index", "Ticker", new { codTicker = a.CodTicker });
+                        <tr class="clickable-row" data-href="@link" tabindex="0">
+                            <td><strong>@a.CodTicker</strong></td>
+                            <td><span class="badge bg-primary">@a.Score</span></td>
+                            <td>@a.Type</td>
+                            <td>@(a.LastPrice?.ToString("N2") ?? "-")</td>
+                            <td>@(a.LastRsi?.ToString("N2") ?? "-")</td>
+                            <td>@a.PeriodsConfirmed</td>
+                            <td>@a.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@a.Reason</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<style>
+    .clickable-row { cursor: pointer; }
+    .clickable-row:focus { outline: 3px solid rgba(13,110,253,0.25); }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.clickable-row').forEach(function (row) {
+            row.addEventListener('click', function (e) {
+                if (e.target.closest('a')) return;
+                var href = row.getAttribute('data-href');
+                if (href) location.href = href;
+            });
+            row.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    var href = row.getAttribute('data-href');
+                    if (href) location.href = href;
+                }
+            });
+        });
+    });
+</script>

@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 public class AppDbContext : DbContext
 {
     public DbSet<Tickers> Tickers { get; set; }
+    public DbSet<MarketAnalystBot.Web.Models.OpportunityAnalysis> OpportunityAnalyses { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

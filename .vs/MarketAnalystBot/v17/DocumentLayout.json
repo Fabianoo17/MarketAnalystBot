@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\source\\repos\\MarketAnalystBot\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Migrations\\20251205040211_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:MarketAnalystBot.Web\\Migrations\\20251205040211_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\marketanalystbot.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\marketanalystbot.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\controllers\\tickercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\controllers\\tickercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}|MarketAnalystBot\\MarketAnalystBot.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot\\application\\services\\opportunityengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}|MarketAnalystBot\\MarketAnalystBot.csproj|solutionrelative:marketanalystbot\\application\\services\\opportunityengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\views\\ticker\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -21,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{40BA1052-2DBA-41FE-85F3-5C07B41CD1B6}|MarketAnalystBot\\MarketAnalystBot.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot\\infrastructure\\brapi\\models\\brapiquoteresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -45,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|c:\\source\\repos\\marketanalystbot\\marketanalystbot.web\\marketanalystbot.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{9AEE955E-0032-4A9E-BD48-FD88471C4122}|MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj|solutionrelative:marketanalystbot.web\\marketanalystbot.web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -98,33 +106,72 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
-              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
-              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
-              "RelativeToolTip": "MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
-              "ViewState": "AQIAAFcAAAAAAAAAAAAWwHUAAAAZAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-04T10:24:27.02Z",
+              "DocumentIndex": 0,
+              "Title": "20251205040211_initial.cs",
+              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Migrations\\20251205040211_initial.cs",
+              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Migrations\\20251205040211_initial.cs",
+              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Migrations\\20251205040211_initial.cs",
+              "RelativeToolTip": "MarketAnalystBot.Web\\Migrations\\20251205040211_initial.cs",
+              "ViewState": "AQIAAB8AAAAAAAAAAAAgwCkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-05T04:02:11.614Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "TickerController.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Controllers\\TickerController.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Controllers\\TickerController.cs",
               "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Controllers\\TickerController.cs",
               "RelativeToolTip": "MarketAnalystBot.Web\\Controllers\\TickerController.cs",
-              "ViewState": "AQIAACQAAAAAAAAAAAAowCsAAAAMAAAA",
+              "ViewState": "AQIAAEQAAAAAAAAAAAAiwEsAAAA3AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-04T10:24:14.901Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "MarketAnalystBot.Web\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAIBJwBwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T00:07:12.785Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MarketAnalystBot.Web.csproj",
+              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
+              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
+              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
+              "RelativeToolTip": "MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-04T01:45:50.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "OpportunityEngine.cs",
+              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Application\\Services\\OpportunityEngine.cs",
+              "RelativeDocumentMoniker": "MarketAnalystBot\\Application\\Services\\OpportunityEngine.cs",
+              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Application\\Services\\OpportunityEngine.cs",
+              "RelativeToolTip": "MarketAnalystBot\\Application\\Services\\OpportunityEngine.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-05T03:39:01.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Program.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Program.cs",
@@ -138,45 +185,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "MarketAnalystBot.Web\\Controllers\\HomeController.cs",
-              "ViewState": "AQIAADIAAAAAAAAAAAAwwCgAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T00:07:12.785Z",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
+              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
+              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
+              "RelativeToolTip": "MarketAnalystBot.Web\\Views\\Ticker\\Index.cshtml",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAWwHUAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-04T10:24:27.02Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Contexts\\AppDbContext.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Contexts\\AppDbContext.cs",
               "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Contexts\\AppDbContext.cs",
               "RelativeToolTip": "MarketAnalystBot.Web\\Contexts\\AppDbContext.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAiwBUAAAASAAAA",
+              "ViewState": "AQIAABIAAAAAAAAAAAA2wBYAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-04T01:50:52.304Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "TickerFilterViewModel.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Models\\Ticker\\TickerFilterViewModel.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot.Web\\Models\\Ticker\\TickerFilterViewModel.cs",
               "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\Models\\Ticker\\TickerFilterViewModel.cs",
               "RelativeToolTip": "MarketAnalystBot.Web\\Models\\Ticker\\TickerFilterViewModel.cs",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAqwA4AAAAkAAAA",
+              "ViewState": "AQIAAAIAAAAAAAAAAAA6wA4AAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-04T10:26:11.387Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "Class.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Filters\\Class.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot\\Filters\\Class.cs",
@@ -189,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\appsettings.json",
               "RelativeDocumentMoniker": "MarketAnalystBot.Web\\appsettings.json",
@@ -202,20 +249,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "BrapiQuoteResponse.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Infrastructure\\Brapi\\Models\\BrapiQuoteResponse.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot\\Infrastructure\\Brapi\\Models\\BrapiQuoteResponse.cs",
               "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Infrastructure\\Brapi\\Models\\BrapiQuoteResponse.cs",
               "RelativeToolTip": "MarketAnalystBot\\Infrastructure\\Brapi\\Models\\BrapiQuoteResponse.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAIAywBEAAAAfAAAA",
+              "ViewState": "AQIAAAgAAAAAAAAAAAD4vxEAAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-04T02:03:42.919Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "BrapiClient.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Infrastructure\\Brapi\\BrapiClient.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot\\Infrastructure\\Brapi\\BrapiClient.cs",
@@ -228,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "IBrapiClient.cs",
               "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot\\Application\\Contracts\\IBrapiClient.cs",
               "RelativeDocumentMoniker": "MarketAnalystBot\\Application\\Contracts\\IBrapiClient.cs",
@@ -237,19 +284,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAqwAYAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-04T02:08:55.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "MarketAnalystBot.Web",
-              "DocumentMoniker": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
-              "RelativeDocumentMoniker": "MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
-              "ToolTip": "C:\\source\\repos\\MarketAnalystBot\\MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
-              "RelativeToolTip": "MarketAnalystBot.Web\\MarketAnalystBot.Web.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-12-04T01:45:50.274Z",
               "EditorCaption": ""
             }
           ]
