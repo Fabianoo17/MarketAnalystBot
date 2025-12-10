@@ -27,8 +27,18 @@ internal class Program
             Token = string.IsNullOrWhiteSpace(token) ? null : token
         };
 
+        
+
         IBrapiClient client = new BrapiClient(settings);
         IOpportunityEngine engine = new OpportunityEngine();
+
+        var quote1 = await client.GetDailyHistoryAsync("ABEV3", "max", "1mo");
+
+var engineMo = new MonthlyOpportunityEngine();
+var signals = engineMo.AnalyzeMonthlyHistory(quote1, "ABEV3");
+
+foreach(var signal in signals) Console.WriteLine($"{signal.Ticker} | {signal.Date:yyyy-MM-dd} | {signal.Type} | {signal.Reason}");
+
 
         foreach (var ticker in Tickers)
         {

@@ -75,6 +75,8 @@ namespace MarketAnalystBot.Web.Controllers
 
         public async Task<IActionResult> Oportunities()
         {
+            var monthly = await _brapiClient.GetDailyHistoryAsync("M1TA34","max", "1mo");
+            var teste = MonthlyQuoteFilter.GetStochRsiCrossDate(monthly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult());
             var analyses = await _context.OpportunityAnalyses
                 .OrderByDescending(a => a.Score)
                 .ToListAsync();
@@ -101,6 +103,7 @@ namespace MarketAnalystBot.Web.Controllers
                     // Get daily and weekly quotes
                     var daily = await _brapiClient.GetDailyHistoryAsync(cod, "2y", "1d");
                     var weekly = await _brapiClient.GetDailyHistoryAsync(cod, "5y", "1wk");
+                    var monthly = await _brapiClient.GetDailyHistoryAsync(cod, "max", "1mo");
 
                     // Analyze both periods
                     var dailySignals = daily is null ? new List<OpportunitySignal>() : _opportunityEngine.AnalyzeHistory(daily);
@@ -186,6 +189,9 @@ namespace MarketAnalystBot.Web.Controllers
                         LastPrice = (decimal?)(chosen?.LastPrice ?? 0),
                         LastRsi = (decimal?)(chosen?.LastRsi ?? 0),
                         PeriodsConfirmed = string.Join(";", periods),
+                        MonthlySignal = MonthlyQuoteFilter.GetStochRsiCrossDate(monthly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
+                        WeeklySignal = WeeklyDailyQuoteFilter.GetSignalDate(weekly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
+                        DailySignal = WeeklyDailyQuoteFilter.GetSignalDate(daily ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
                         CreatedAt = DateTime.UtcNow
                     };
 

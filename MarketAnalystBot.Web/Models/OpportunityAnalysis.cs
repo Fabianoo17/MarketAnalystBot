@@ -15,5 +15,8 @@ namespace MarketAnalystBot.Web.Models
         public decimal? LastRsi { get; set; }
         public string PeriodsConfirmed { get; set; } = string.Empty; // e.g. "Daily;Weekly"
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? MonthlySignal { get; internal set; }
+        public DateTime?  WeeklySignal { get; internal set; }
+        public DateTime?  DailySignal { get; internal set; }
     }
 }

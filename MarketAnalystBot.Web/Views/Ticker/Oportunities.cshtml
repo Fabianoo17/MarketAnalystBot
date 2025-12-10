@@ -4,6 +4,8 @@
     ViewData["Title"] = "Oportunidades";
 }
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="m-0">Oportunidades identificadas</h2>
@@ -17,7 +19,7 @@
     else
     {
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-sm align-middle">
+            <table id="opportunitiesTable" class="table table-striped table-hover table-sm align-middle">
                 <thead>
                     <tr>
                         <th>Ticker</th>
@@ -28,13 +30,16 @@
                         <th>Períodos</th>
                         <th>Data</th>
                         <th>Motivo</th>
+                        <th>Sinal-Mensal</th>
+                        <th>Sinal-Semanal</th>
+                        <th>Sinal-Diário</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var a in Model)
                     {
-                        var link = Url.Action("Index", "Ticker", new { codTicker = a.CodTicker });
-                        <tr class="clickable-row" data-href="@link" tabindex="0">
+                        // Open TradingView chart with BMFBOVESPA:<ticker>
+                        <tr class="clickable-row" data-href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)" tabindex="0">
                             <td><strong>@a.CodTicker</strong></td>
                             <td><span class="badge bg-primary">@a.Score</span></td>
                             <td>@a.Type</td>
@@ -43,6 +48,10 @@
                             <td>@a.PeriodsConfirmed</td>
                             <td>@a.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
                             <td>@a.Reason</td>
+                            <td>@a.MonthlySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.WeeklySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.DailySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+
                         </tr>
                     }
                 </tbody>
@@ -51,24 +60,28 @@
     }
 </div>
 
-<style>
-    .clickable-row { cursor: pointer; }
-    .clickable-row:focus { outline: 3px solid rgba(13,110,253,0.25); }
-</style>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    $(document).ready(function () {
+        $('#opportunitiesTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+            }
+        });
+
+        // Open TradingView in a new tab when clicking a row
         document.querySelectorAll('.clickable-row').forEach(function (row) {
             row.addEventListener('click', function (e) {
                 if (e.target.closest('a')) return;
                 var href = row.getAttribute('data-href');
-                if (href) location.href = href;
+                if (href) window.open(href, '_blank');
             });
             row.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     var href = row.getAttribute('data-href');
-                    if (href) location.href = href;
+                    if (href) window.open(href, '_blank');
                 }
             });
         });
