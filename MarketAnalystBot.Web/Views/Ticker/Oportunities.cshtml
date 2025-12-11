@@ -48,9 +48,9 @@
                             <td>@a.PeriodsConfirmed</td>
                             <td>@a.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
                             <td>@a.Reason</td>
-                            <td>@a.MonthlySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
-                            <td>@a.WeeklySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
-                            <td>@a.DailySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.MonthlySignal?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@a.WeeklySignal?.ToString("yyyy-MM-dd HH:mm:ss") </td>
+                            <td>@a.DailySignal?.ToString("yyyy-MM-dd HH:mm:ss") </td>
 
                         </tr>
                     }

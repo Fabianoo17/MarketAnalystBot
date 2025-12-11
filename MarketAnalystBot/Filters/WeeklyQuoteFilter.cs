@@ -95,8 +95,7 @@ public static class WeeklyDailyQuoteFilter
             double vol0 = (double)candles[i].Volume;
 
             bool volumeImproving = vol2 < vol1 && vol1 < vol0;
-            if (!volumeImproving)
-                continue;
+
 
             // all checks passed, return the date of the cross (current bar)
             return curr.Date;
