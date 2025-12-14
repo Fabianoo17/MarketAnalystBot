@@ -27,12 +27,12 @@
                         <th>Tipo</th>
                         <th>Último Preço</th>
                         <th>Último RSI</th>
-                        <th>Períodos</th>
-                        <th>Data</th>
-                        <th>Motivo</th>
                         <th>Sinal-Mensal</th>
                         <th>Sinal-Semanal</th>
                         <th>Sinal-Diário</th>
+                        <th>MACDSinal-Mensal</th>
+                        <th>MACDSinal-Semanal</th>
+                        <th>MACDSinal-Diário</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,12 +45,12 @@
                             <td>@a.Type</td>
                             <td>@(a.LastPrice?.ToString("N2") ?? "-")</td>
                             <td>@(a.LastRsi?.ToString("N2") ?? "-")</td>
-                            <td>@a.PeriodsConfirmed</td>
-                            <td>@a.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>@a.Reason</td>
-                            <td>@a.MonthlySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
-                            <td>@a.WeeklySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
-                            <td>@a.DailySignal?.ToShortDateString() <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.MonthlySignal?.ToString("yyyy-MM-dd HH:mm") <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.WeeklySignal?.ToString("yyyy-MM-dd HH:mm") <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.DailySignal?.ToString("yyyy-MM-dd HH:mm") <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.MACDMonthlySignal?.ToString("yyyy-MM-dd HH:mm") <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.MACDWeeklySignal?.ToString("yyyy-MM-dd HH:mm") <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
+                            <td>@a.MACDDailySignal?.ToString("yyyy-MM-dd HH:mm") <button class="btn" href="https://www.tradingview.com/chart/J1wJhQMP/?symbol=BMFBOVESPA%3A@(a.CodTicker)"></button></td>
 
                         </tr>
                     }

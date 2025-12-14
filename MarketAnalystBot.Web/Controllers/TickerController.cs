@@ -75,8 +75,8 @@ namespace MarketAnalystBot.Web.Controllers
 
         public async Task<IActionResult> Oportunities()
         {
-            var monthly = await _brapiClient.GetDailyHistoryAsync("M1TA34","max", "1mo");
-            var teste = MonthlyQuoteFilter.GetStochRsiCrossDate(monthly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult());
+            var monthly = await _brapiClient.GetDailyHistoryAsync("M1TA34","2y", "1d");
+            var teste = WeeklyDailyQuoteFilter.GetSignalDate(monthly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult());
             var analyses = await _context.OpportunityAnalyses
                 .OrderByDescending(a => a.Score)
                 .ToListAsync();
@@ -192,6 +192,11 @@ namespace MarketAnalystBot.Web.Controllers
                         MonthlySignal = MonthlyQuoteFilter.GetStochRsiCrossDate(monthly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
                         WeeklySignal = WeeklyDailyQuoteFilter.GetSignalDate(weekly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
                         DailySignal = WeeklyDailyQuoteFilter.GetSignalDate(daily ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
+                        MACDMonthlySignal = MacdQuoteFilter.GetSignalDate(monthly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
+                        MACDWeeklySignal = MacdQuoteFilter.GetSignalDate(weekly ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
+                        MACDDailySignal = MacdQuoteFilter.GetSignalDate(daily ?? new Infrastructure.Brapi.Models.BrapiQuoteResult()),
+
+
                         CreatedAt = DateTime.UtcNow
                     };
 

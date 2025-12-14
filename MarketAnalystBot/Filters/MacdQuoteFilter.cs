@@ -1,7 +1,7 @@
-using MarketAnalystBot.Infrastructure.Brapi.Models;
+﻿using MarketAnalystBot.Infrastructure.Brapi.Models;
 using Skender.Stock.Indicators;
 
-public static class WeeklyDailyQuoteFilter
+public static class MacdQuoteFilter
 {
     private const int StochRsiPeriod = 14;
     private const int StochRsiK = 14;
@@ -43,35 +43,12 @@ public static class WeeklyDailyQuoteFilter
         if (candles.Count < 3)
             return null;
 
-        var stochRsi = candles.GetStochRsi(StochRsiPeriod, StochRsiK, StochRsiSignal, StochRsiSignal).ToList();
         var macd = candles.GetMacd(12, 26, 9).ToList();
 
-        if (stochRsi.Count < 3 || macd.Count < 3)
-            return null;
-
-        const double threshold = 20.0;
 
         // iterate from most recent backwards, require at least two previous bars for checks
-        for (int i = stochRsi.Count - 1; i >= 2; i--)
+        for (int i = macd.Count - 1; i >= 2; i--)
         {
-            var prev = stochRsi[i - 1];
-            var curr = stochRsi[i];
-
-            if (!prev.StochRsi.HasValue || !prev.Signal.HasValue ||
-                !curr.StochRsi.HasValue || !curr.Signal.HasValue)
-                continue;
-
-            double prevStoch = prev.StochRsi.Value;
-            double currStoch = curr.StochRsi.Value;
-            double prevSignal = prev.Signal.Value;
-            double currSignal = curr.Signal.Value;
-
-            // stochRsi cross up while still below threshold
-            bool stochCondition = currStoch >= threshold && prevStoch < threshold;
-            if (!stochCondition)
-                continue;
-
-            // verify MACD histogram improvement for last 3 bars (i-2, i-1, i)
             var macdBar2 = macd[i - 2];
             var macdBar1 = macd[i - 1];
             var macdBar0 = macd[i];
@@ -85,23 +62,22 @@ public static class WeeklyDailyQuoteFilter
             double hist1 = macdBar1.Macd.Value - macdBar1.Signal.Value;
             double hist0 = macdBar0.Macd.Value - macdBar0.Signal.Value;
 
-            bool macdImproving = hist2 < hist1 && hist1 < hist0;
+            bool macdImproving = macdBar0.Macd.Value > macdBar0.Signal.Value &&
+                 hist1 < 0.07 &&
+                hist0 >= 0.07;
             if (!macdImproving)
                 continue;
-
-            // verify volume improvement for last 3 bars
-            double vol2 = (double)candles[i - 2].Volume;
-            double vol1 = (double)candles[i - 1].Volume;
-            double vol0 = (double)candles[i].Volume;
 
             //bool volumeImproving = vol2 < vol1 && vol1 < vol0;
             //if (!volumeImproving)
             //    continue;
 
             // all checks passed, return the date of the cross (current bar)
-            return curr.Date;
+            return macdBar0.Date;
         }
 
         return null;
     }
 }
+
+

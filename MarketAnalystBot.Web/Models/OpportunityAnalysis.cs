@@ -18,5 +18,8 @@ namespace MarketAnalystBot.Web.Models
         public DateTime? MonthlySignal { get; internal set; }
         public DateTime?  WeeklySignal { get; internal set; }
         public DateTime?  DailySignal { get; internal set; }
+        public DateTime? MACDMonthlySignal { get; internal set; }
+        public DateTime? MACDWeeklySignal { get; internal set; }
+        public DateTime? MACDDailySignal { get; internal set; }
     }
 }
